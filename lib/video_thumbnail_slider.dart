@@ -65,11 +65,16 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
     if (_videoController.value.isPlaying) {
       final position = (await _videoController.position) ?? Duration.zero;
       setState(() {
-        _slidePosition =
-            position.inSeconds / _videoController.value.duration.inSeconds;
+        _slidePosition = position.inMilliseconds /
+            _videoController.value.duration.inMilliseconds;
       });
+      return;
     }
-    if (_videoController.value.isCompleted) {
+
+    final position = (await _videoController.position) ?? Duration.zero;
+
+    if (position.inMilliseconds >
+        _videoController.value.duration.inMilliseconds) {
       setState(() {
         _slidePosition = 1;
       });

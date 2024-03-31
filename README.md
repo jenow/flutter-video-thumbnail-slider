@@ -9,7 +9,7 @@ A Flutter package that provides a customizable video thumbnail slider widget. Th
 - Allows seeking to different parts of the video by interacting with the slider.
 ## Preview
 
-<img src="https://github.com/nguyenchiemdu/flutter-video-thumbnail-slider/blob/main/assets/screenshot_1.png?raw=true" height="600" />
+<img src="https://github.com/nguyenchiemdu/flutter-video-thumbnail-slider/blob/main/assets/screenshot_2.gif?raw=true" height="600" />
 
 ## Getting Started
 
