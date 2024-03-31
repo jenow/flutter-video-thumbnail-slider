@@ -1,6 +1,6 @@
 name: video_thumbnail_slider
 description: A Flutter package that provides a customizable video thumbnail slider widget.
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/nguyenchiemdu/flutter-video-thumbnail-slider
 
 environment:
