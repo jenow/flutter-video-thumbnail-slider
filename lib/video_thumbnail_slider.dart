@@ -30,6 +30,9 @@ class VideoThumbnailSlider extends StatefulWidget {
   /// A listener for the video position changes.
   final void Function(Duration position)? onPositionChanged;
 
+  /// The color of the current frame border.
+  final Color currentFrameBorderColor;
+
   /// Constructor for VideoThumbnailSlider.
   const VideoThumbnailSlider({
     Key? key,
@@ -41,6 +44,7 @@ class VideoThumbnailSlider extends StatefulWidget {
     this.frameBuilder,
     this.backgroundColor = Colors.black,
     this.onPositionChanged,
+    this.currentFrameBorderColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -135,7 +139,13 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
               child: SizedBox(
                 width: _width / _splitImage,
                 height: _height,
-                child: widget.customCurrentFrameBuilder?.call(widget.controller) ?? VideoPlayer(widget.controller),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: widget.currentFrameBorderColor, width: 2),
+                    color: Colors.transparent,
+                  ),
+                  child: widget.customCurrentFrameBuilder?.call(widget.controller),
+                ),
               ),
             ),
           )
@@ -210,7 +220,7 @@ class _BackgroundSliderState extends State<BackgroundSlider> {
               child: widget.frameBuilder?.call(imgData) ??
                   Image.memory(
                     imgData,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                   )))
           .toList(),
     );
