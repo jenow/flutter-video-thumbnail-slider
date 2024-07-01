@@ -88,10 +88,12 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
       _slidePosition += details.delta.dx / context.size!.width;
       _slidePosition = _slidePosition.clamp(0.0, 1.0);
     });
-    final second = widget.controller.value.duration.inSeconds;
+    // final second = widget.controller.value.duration.inSeconds;
+    final ms = widget.controller.value.duration.inMilliseconds;
     await widget.controller.pause();
     await widget.controller
-        .seekTo(Duration(seconds: (second * _slidePosition).ceil()));
+        .seekTo(Duration(milliseconds: (ms * _slidePosition).ceil()));
+        // .seekTo(Duration(seconds: (second * _slidePosition).ceil()));
   }
 
   @override
