@@ -70,6 +70,9 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
       setState(() {
         _slidePosition = position.inMilliseconds / _videoController.value.duration.inMilliseconds;
       });
+      if (widget.onPositionChanged != null) {
+        widget.onPositionChanged!(position);
+      }
       return;
     }
 
