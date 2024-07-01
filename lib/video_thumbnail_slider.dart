@@ -22,11 +22,13 @@ class VideoThumbnailSlider extends StatefulWidget {
   final Color backgroundColor;
 
   /// A custom builder for the current frame of the video.
-  final Widget Function(VideoPlayerController controller)?
-      customCurrentFrameBuilder;
+  final Widget Function(VideoPlayerController controller)? customCurrentFrameBuilder;
 
   /// A builder for the individual frames in the slider.
   final Widget Function(Uint8List imageData)? frameBuilder;
+
+  /// A listener for the video position changes.
+  final void Function(Duration position)? onPositionChanged;
 
   /// Constructor for VideoThumbnailSlider.
   const VideoThumbnailSlider({
@@ -38,6 +40,7 @@ class VideoThumbnailSlider extends StatefulWidget {
     this.customCurrentFrameBuilder,
     this.frameBuilder,
     this.backgroundColor = Colors.black,
+    this.onPositionChanged,
   }) : super(key: key);
 
   @override
@@ -65,19 +68,20 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
     if (_videoController.value.isPlaying) {
       final position = (await _videoController.position) ?? Duration.zero;
       setState(() {
-        _slidePosition = position.inMilliseconds /
-            _videoController.value.duration.inMilliseconds;
+        _slidePosition = position.inMilliseconds / _videoController.value.duration.inMilliseconds;
       });
       return;
     }
 
     final position = (await _videoController.position) ?? Duration.zero;
 
-    if (position.inMilliseconds >
-        _videoController.value.duration.inMilliseconds) {
+    if (position.inMilliseconds > _videoController.value.duration.inMilliseconds) {
       setState(() {
         _slidePosition = 1;
       });
+    }
+    if (widget.onPositionChanged != null) {
+      widget.onPositionChanged!(position);
     }
   }
 
@@ -91,9 +95,8 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
     // final second = widget.controller.value.duration.inSeconds;
     final us = widget.controller.value.duration.inMilliseconds;
     await widget.controller.pause();
-    await widget.controller
-        .seekTo(Duration(microseconds: (us * _slidePosition).ceil()));
-        // .seekTo(Duration(seconds: (second * _slidePosition).ceil()));
+    await widget.controller.seekTo(Duration(microseconds: (us * _slidePosition).ceil()));
+    // .seekTo(Duration(seconds: (second * _slidePosition).ceil()));
   }
 
   @override
@@ -129,9 +132,7 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
               child: SizedBox(
                 width: _width / _splitImage,
                 height: _height,
-                child:
-                    widget.customCurrentFrameBuilder?.call(widget.controller) ??
-                        VideoPlayer(widget.controller),
+                child: widget.customCurrentFrameBuilder?.call(widget.controller) ?? VideoPlayer(widget.controller),
               ),
             ),
           )
@@ -191,10 +192,7 @@ class _BackgroundSliderState extends State<BackgroundSlider> {
   // Generate the list of thumbnails from the video.
   void getListThumbnail() async {
     hasListThumbnail = true;
-    final result = await FrameUtils().getListThumbnailIsolate(
-        videoPath: _videoController.dataSource,
-        duration: _videoController.value.duration,
-        split: widget.splitThumb);
+    final result = await FrameUtils().getListThumbnailIsolate(videoPath: _videoController.dataSource, duration: _videoController.value.duration, split: widget.splitThumb);
     setState(() {
       listThumbnail = result;
     });
