@@ -141,7 +141,7 @@ class VideoThumbnailSliderState extends State<VideoThumbnailSlider> {
                 height: _height,
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: widget.currentFrameBorderColor, width: 2),
+                    border: Border.all(color: widget.currentFrameBorderColor, width: 3),
                     color: Colors.transparent,
                   ),
                   child: widget.customCurrentFrameBuilder?.call(widget.controller),
