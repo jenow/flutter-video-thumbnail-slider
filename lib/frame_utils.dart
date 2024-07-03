@@ -13,7 +13,7 @@ class FrameUtils {
       final uint8list = await VideoThumbnail.thumbnailData(
         video: videoPath,
         imageFormat: ImageFormat.JPEG,
-        quality: 75,
+        quality: 55,
         timeMs: position.inMilliseconds,
       );
       return uint8list;
